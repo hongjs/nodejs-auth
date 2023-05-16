@@ -1,7 +1,9 @@
 [
   {
-    "username": "admin",
-    "password": "71c299a202c27c3d9baa4fd17c2582a0abc1b4a1eb43811bbfb809116923a1d5b8a769c510d5322b5481918b9ab95676d6e498e80c0467170e66361f6450e6e1",
-    "salt": "43cdb731e14b2f47cd8636a133407fdd"
+    "id": "7e160f8d4e0da4ce4d4a1aa199f61ac5",
+    "email": "sompote.r@gmail.com",
+    "password": "72cc0a6cebb9dba6cfae1a91aea76dd0111f8d0a2eb0b4eadc03e18acadd539402ddbb67dcd768742b9c9d06bda9d0d689d15af0c7cda7f3ff4b79708fdbb11e",
+    "name": "admin",
+    "salt": "d56691d13ce701b2c51f383ff797e837"
   }
 ]

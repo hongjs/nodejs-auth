@@ -3,14 +3,13 @@ import { Buffer } from 'buffer';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import constants from '../config/constants';
-import dbUtil from './dbUtil';
 
-export const serializeUser = (user) => {
-  const token = signJwt(user, constants.JWTExpiry || '7d');
+export const serializeUser = (payload) => {
+  const token = signJwt(payload, constants.JWTExpiry || '7d');
   return token;
 };
 
-export const deserializeUser = async (token) => {
+export const deserializeUser = (token) => {
   const decoded = verifyJwt(token);
   return decoded;
 };
@@ -52,21 +51,17 @@ const decrypt = (encryptedWithIV) => {
   return decrypted;
 };
 
-function hashPassword(password, salt) {
+export function hashPassword(password, salt) {
   const hash = crypto
     .pbkdf2Sync(password, salt, 1000, 64, 'sha512')
     .toString('hex');
   return hash;
 }
 
-function comparePasswords(plainPassword, hashedPassword, salt) {
+export function comparePassword(plainPassword, hashedPassword, salt) {
   const hash = hashPassword(plainPassword, salt);
   return hash === hashedPassword;
 }
-
-export const findUser = async (username) => {
-  return dbUtil.findUser(username);
-};
 
 const getConfig = () => {
   if (constants.jwtEncryptSecret.length !== 32) {
@@ -84,7 +79,6 @@ const getConfig = () => {
 export default {
   serializeUser,
   deserializeUser,
-  findUser,
   hashPassword,
-  comparePasswords,
+  comparePassword,
 };

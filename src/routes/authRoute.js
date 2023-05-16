@@ -1,24 +1,25 @@
 import { Router } from 'express';
-import authUtils from '../utils/authUtils';
-import dbUtil from '../utils/dbUtil';
+import { comparePassword, serializeUser } from '../utils/authUtils';
+import { hasUser, getUser, getUserCredential } from '../utils/dbUtil';
+import { unauthorized, internalServerError } from '../utils/errors';
 
 const app = Router();
 
-app.post('/api/auth', async (req, res) => {
+app.post('/api/auth', (req, res) => {
   try {
-    const { username, password } = req.body;
-    if (!dbUtil.hasUser(username))
-      return res.status(401).send({ status: 'Unauthorization' });
+    const { email, password } = req.body;
+    if (!hasUser(email)) return unauthorized(res);
 
-    const { hashedPassword, salt } = dbUtil.getUserCredential(username);
+    const { hashedPassword, salt } = getUserCredential(email);
 
-    if (!authUtils.comparePasswords(password, hashedPassword, salt))
-      return res.status(401).send({ status: 'Unauthorization' });
+    if (!comparePassword(password, hashedPassword, salt))
+      return unauthorized(res);
 
-    const user = dbUtil.getUser(username);
-    res.send(user);
+    const user = getUser(email);
+    const token = serializeUser(user);
+    res.send({ token });
   } catch (error) {
-    res.status(500).send(error);
+    internalServerError(res, error);
   }
 });
 
