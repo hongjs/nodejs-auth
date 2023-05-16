@@ -11,22 +11,34 @@ const removeCredential = (user) => {
   return obj;
 };
 
-export const hasUser = (email) => {
+export const hasUser = async (email) => {
   return userMap.has(email);
 };
 
-export const getUsers = (filter) => {
+export const getUsers = async (filter) => {
   return [...userMap].map((user) => {
     return removeCredential(user[1]);
   });
 };
 
-export const getUser = (email) => {
+export const getUser = async (email) => {
   if (userMap.has(email)) {
     const user = removeCredential(userMap.get(email));
     return user;
   }
   return null;
+};
+
+const writeFile = async () => {
+  const absolutePath = path.resolve('./database');
+  const jsonData = JSON.stringify([...userMap].map((user) => user[1]));
+  fs.writeFile(`${absolutePath}/users.json`, jsonData, 'utf8', (err) => {
+    if (err) {
+      console.error('Error writing to file:', err);
+    } else {
+      console.log('Data written to file successfully.');
+    }
+  });
 };
 
 export const addUser = async (email, password, name) => {
@@ -35,19 +47,21 @@ export const addUser = async (email, password, name) => {
   const hashedPassword = hashPassword(password, salt);
   const user = { id, email, password: hashedPassword, name, salt };
   userMap.set(id, user);
-
-  const jsonData = JSON.stringify([...userMap].map((user) => user[1]));
-  const absolutePath = path.resolve('./database');
-
-  fs.writeFile(`${absolutePath}/users.json`, jsonData, 'utf8', (err) => {
-    if (err) {
-      console.error('Error writing to file:', err);
-    } else {
-      console.log('Data written to file successfully.');
-    }
-  });
-
+  writeFile();
   return removeCredential(user);
+};
+
+export const updateUser = async (email, name) => {
+  const user = userMap.get(email);
+  user.name = name;
+  userMap.set(email, user);
+  writeFile();
+  return removeCredential(user);
+};
+
+export const deleteUser = async (email) => {
+  userMap.delete(email);
+  writeFile();
 };
 
 export const getUserCredential = (email) => {
@@ -64,4 +78,6 @@ export default {
   getUsers,
   getUserCredential,
   addUser,
+  updateUser,
+  deleteUser,
 };
