@@ -7,7 +7,28 @@ const app = Router();
 
 app.get('/api/user/list', withAuth, async (req, res) => {
   try {
-    const users = await dbUtil.getUsers();
+    const users = await dbUtil.findUsers();
+    res.send(users);
+  } catch (error) {
+    internalServerError(res, error);
+  }
+});
+
+app.get('/api/user', withAuth, async (req, res) => {
+  try {
+    const { keyword } = req.query;
+    const users = await dbUtil.findUsers(keyword);
+    res.send(users);
+  } catch (error) {
+    internalServerError(res, error);
+  }
+});
+
+app.get('/api/user/:id', withAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(id);
+    const users = await dbUtil.getUserById(id);
     res.send(users);
   } catch (error) {
     internalServerError(res, error);
@@ -18,7 +39,8 @@ app.post('/api/user', withAuth, async (req, res) => {
   const { email, password, password2, name } = req.body;
   if (password !== password2)
     return badRequest(res, { message: 'Password mismatch' });
-  if (dbUtil.hasUser(email))
+
+  if (await dbUtil.hasUser(email))
     return badRequest(res, { message: 'email exists' });
 
   try {

@@ -5,7 +5,7 @@ import { unauthorized, internalServerError } from '../utils/errors';
 
 const app = Router();
 
-app.post('/api/auth', (req, res) => {
+app.post('/api/auth', async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!hasUser(email)) return unauthorized(res);
@@ -15,7 +15,7 @@ app.post('/api/auth', (req, res) => {
     if (!comparePassword(password, hashedPassword, salt))
       return unauthorized(res);
 
-    const user = getUser(email);
+    const user = await getUser(email);
     const token = serializeUser(user);
     res.send({ token });
   } catch (error) {

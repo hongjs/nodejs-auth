@@ -9,12 +9,6 @@ app.use(bodyParser.json());
 // Import all business routes
 routes.forEach((route) => app.use(route));
 
-app.all('/', async (req, res) => {
-  res.send({ message: 'Hi There!' });
-});
-app.all('/api', async (req, res) => {
-  res.send({ message: 'Hi There!' });
-});
 app.all('*', async (req, res) => {
   return notFound(res);
 });

@@ -2,8 +2,9 @@
   {
     "id": "7e160f8d4e0da4ce4d4a1aa199f61ac5",
     "email": "sompote.r@gmail.com",
-    "password": "72cc0a6cebb9dba6cfae1a91aea76dd0111f8d0a2eb0b4eadc03e18acadd539402ddbb67dcd768742b9c9d06bda9d0d689d15af0c7cda7f3ff4b79708fdbb11e",
+    "password": "674bb47130948315314af3a76c06af8a8e71f6e24d5a073de7b96fc5f3321d5e8fb1687ae6a21a9f807f94ab12982a8709bd2b686c055cbc3126163013b191c1",
     "name": "admin",
-    "salt": "d56691d13ce701b2c51f383ff797e837"
+    "salt": "d56691d13ce701b2c51f383ff797e837",
+    "superAdmin": true
   }
 ]

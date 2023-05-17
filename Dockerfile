@@ -11,4 +11,4 @@ RUN apk --no-cache add curl
 RUN curl -sf https://gobinaries.com/tj/node-prune | sh
 RUN node-prune
 
-CMD ["npm", "run", "dev"]
+CMD ["yarn", "start"]

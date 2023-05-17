@@ -1,0 +1,179 @@
+{
+  "info": {
+    "_postman_id": "d9f14bf1-925d-4f1b-8601-8db3e752ef31",
+    "name": "nodejs-auth",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "1697107",
+    "_collection_link": "https://adadevteam.postman.co/workspace/Team-Workspace~aef20a12-23a5-45d7-8664-c6f465176bb8/collection/1697107-d9f14bf1-925d-4f1b-8601-8db3e752ef31?action=share&creator=1697107&source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.collectionVariables.set('token', pm.response.json().token);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\": \"sompote.r@gmail.com\",\r\n    \"password\": \"password\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{endpoint}}/api/auth",
+          "host": ["{{endpoint}}"],
+          "path": ["api", "auth"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "List all users",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{endpoint}}/api/user/list",
+          "host": ["{{endpoint}}"],
+          "path": ["api", "user", "list"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get user by name",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{endpoint}}/api/user?keyword=com",
+          "host": ["{{endpoint}}"],
+          "path": ["api", "user"],
+          "query": [
+            {
+              "key": "keyword",
+              "value": "com"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create user",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\": \"a@b.com\",\r\n    \"password\": \"password\",\r\n    \"password2\": \"password\",\r\n     \"name\": \"Test\"\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{endpoint}}/api/user",
+          "host": ["{{endpoint}}"],
+          "path": ["api", "user"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Edit user",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\": \"a@b.com\",\r\n    \"name\": \"Test2\"\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{endpoint}}/api/user",
+          "host": ["{{endpoint}}"],
+          "path": ["api", "user"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete user",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\": \"a@b.com\"\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{endpoint}}/api/user",
+          "host": ["{{endpoint}}"],
+          "path": ["api", "user"]
+        }
+      },
+      "response": []
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "endpoint",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}

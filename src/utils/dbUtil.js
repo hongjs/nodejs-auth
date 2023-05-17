@@ -7,6 +7,7 @@ import { hashPassword } from './authUtils';
 const userMap = new Map(users.map((i) => [i.email, i]));
 
 const removeCredential = (user) => {
+  if (!user) return undefined;
   const { password, salt, ...obj } = user;
   return obj;
 };
@@ -15,10 +16,25 @@ export const hasUser = async (email) => {
   return userMap.has(email);
 };
 
-export const getUsers = async (filter) => {
-  return [...userMap].map((user) => {
-    return removeCredential(user[1]);
+export const getUserById = async (id) => {
+  const user = [...userMap].find((i) => {
+    return i[1].id === id;
   });
+  if (user) return removeCredential(user[1]);
+};
+export const findUsers = async (keyword) => {
+  if (!keyword) return [...userMap].map((i) => removeCredential(i[1]));
+
+  const regex = new RegExp(keyword, 'i');
+  const users = [...userMap]
+    .filter((i) => {
+      return ['name', 'email'].some((k) => regex.test(i[1][k]));
+    })
+    .map((i) => {
+      return removeCredential(i[1]);
+    });
+
+  return users;
 };
 
 export const getUser = async (email) => {
@@ -32,13 +48,7 @@ export const getUser = async (email) => {
 const writeFile = async () => {
   const absolutePath = path.resolve('./database');
   const jsonData = JSON.stringify([...userMap].map((user) => user[1]));
-  fs.writeFile(`${absolutePath}/users.json`, jsonData, 'utf8', (err) => {
-    if (err) {
-      console.error('Error writing to file:', err);
-    } else {
-      console.log('Data written to file successfully.');
-    }
-  });
+  await fs.promises.writeFile(`${absolutePath}/users.json`, jsonData, 'utf8');
 };
 
 export const addUser = async (email, password, name) => {
@@ -60,8 +70,12 @@ export const updateUser = async (email, name) => {
 };
 
 export const deleteUser = async (email) => {
-  userMap.delete(email);
-  writeFile();
+  if (userMap.has(email)) {
+    if (!userMap.get(email).superAdmin) {
+      userMap.delete(email);
+      writeFile();
+    }
+  }
 };
 
 export const getUserCredential = (email) => {
@@ -75,7 +89,8 @@ export const getUserCredential = (email) => {
 export default {
   hasUser,
   getUser,
-  getUsers,
+  getUserById,
+  findUsers,
   getUserCredential,
   addUser,
   updateUser,

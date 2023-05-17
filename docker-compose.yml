@@ -1,0 +1,10 @@
+version: '3'
+services:
+  app:
+    build: .
+    working_dir: /homes/app
+    environment:
+      NODE_ENV: production
+    ports:
+      - 5000:5000
+    command: yarn start
