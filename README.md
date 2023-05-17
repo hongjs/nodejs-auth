@@ -10,6 +10,9 @@ This repo containing the following packages: `express` `jsonwebtoken` `mocha` an
 
 ## How to get tested?
 - Run `yarn test`
+- Optional: you probably test with Postman by import `postman_collection.json` into your Postman app
+  - Firstly, you must call `POST Auth` first to get a token stored on project's Variable
+  - Then you can call the rest requests with stored token
 
 ## How to get dockerize?
 - Run `docker build -t hongjsx/nodejs-auth . `
