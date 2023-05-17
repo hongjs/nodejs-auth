@@ -14,3 +14,9 @@ This repo containing the following packages: `express` `jsonwebtoken` `mocha` an
 ## How to get dockerize?
 - Run `docker build -t hongjsx/nodejs-auth . `
 - Run `docker-compose up`
+
+## What to do next?
+- Secure secret key
+- Interaction with real Database instead of json file
+- Add more coverage test cases
+- Automate build docker image using Github Action
